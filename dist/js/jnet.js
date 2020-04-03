@@ -16,7 +16,7 @@ class _jnet
             this.method = init.method;
             this.data = init.data;
             this.header = init.header;
-            this.auto = init.auto ? init.auto : false;
+            this.auto = init.auto ? init.auto : true;
         }else{
             __dbg('Kamu harus memasukkan data init');
         }
@@ -54,7 +54,6 @@ class _jnet
                 default:
                     method = 'GET' ; break;
             }
-
 
             var x = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHttp');
             x.onreadystatechange = function() {
