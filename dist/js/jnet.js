@@ -1,3 +1,10 @@
+/**
+ * Raw     : https://raw.githubusercontent.com/lamhotsimamora/jnet/master/dist/js/jnet.js
+ * Author  : @lamhotsimamora | { Jnet }
+ * Updated April 2020
+ * Copyright@2020
+ */
+
 const __init = {
     header: 'application/json'
 }
