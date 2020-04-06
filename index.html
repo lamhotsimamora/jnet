@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Simple XMLHttpRequest For Javascript</title>
+	<title>Simple Library XMLHttpRequest (Javascript / AJAX)</title>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.1/css/bulma.min.css">
@@ -44,7 +44,9 @@
 	</div>
 
 </body>
+
 <script src="dist/js/jnet.js"></script>
+<script src="https://www.cdn.lamhotsimamora.com/garuda2/"></script>
 <script>
 	
 	new Vue({
@@ -56,13 +58,14 @@
 		methods : {
 			loadData(){
 				jnet({
-					url : 'https://jsonplaceholder.typicode.com/posts',
-					method : 'get'
+					url : 'https://jsonplaceholder.typicode.com/posts'
 				}).request($response =>{
 					   let $obj = JSON.parse($response);
 					   this.data_post = $obj;
 					   this.loading = false;
-				})
+				},function(error){
+					console.log('Error Function Is Run')
+				});
 			}
 		},
 		mounted(){

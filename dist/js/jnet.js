@@ -6,7 +6,7 @@
  */
 
 const __init = {
-    header: 'application/json'
+    header: 'application/x-www-form-urlencoded; charset=UTF-8'
 }
 
 function __isFunc(f) { var t = {}; return f && t.toString.call(f) === '[object Function]' }
@@ -23,7 +23,7 @@ class _jnet
             this.method = init.method;
             this.data = init.data;
             this.header = init.header;
-            this.auto = init.auto ? init.auto : true;
+            this.auto = (init.auto===undefined) ? true : init.auto;
         }else{
             __dbg('Kamu harus memasukkan data init');
         }
@@ -34,36 +34,25 @@ class _jnet
         let method = this.method === undefined ? 'GET' : this.method;
         let url = this.url;
         let auto = this.auto;
+        let form_data = null; 
         if (url)
         {
-             let form_data = null; 
-            switch (method.toLowerCase()) 
-            {
-                case 'get':
-                    method = 'GET'; break;
-                case 'post':
-                    var i = 0;
-                    method = 'POST'; 
-                    for (var key in this.data) 
-                    { 
-                        if (key === 'length' || !this.data.hasOwnProperty(key)) { 
-                            continue 
-                        } 
-                        var vL = this.data[key];
-                        (i == 0) ? form_data = key + '=' + vL: form_data += '&' + key + '=' + vL;
-                        i++ 
+        	method = method.toUpperCase();
+            if (method==='POST'){
+        	    let i = 0;
+                for (let  key in this.data) 
+                { 
+                    if (key === 'length' || !this.data.hasOwnProperty(key)) { 
+                        continue 
                     } 
-                    break;
-                case 'put':
-                    method = 'PUT'; break;
-                case 'delete':
-                    method = 'DELETE'; break;
-                default:
-                    method = 'GET' ; break;
+                    let value = this.data[key];
+                    (i == 0) ? form_data = key + '=' + value : form_data += '&' + key + '=' + value;
+                    i++ 
+                } 
             }
 
-            var x = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHttp');
-            x.onreadystatechange = function() {
+            let xmlHttpRequest = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHttp');
+            xmlHttpRequest.onreadystatechange = function() {
                 if (auto==false){
                     return callback(this);
                 }
@@ -72,23 +61,29 @@ class _jnet
                     if (this.readyState == 4 && this.status == 200) 
                     {
                         if (callback != undefined && __isFunc(callback)) {
-                            callback(this.responseText, this)
+                            return callback(this.responseText, this)
                         }
                         else 
                         { 
                             __dbg('Callback tidak ada'); 
                         }
+                    }else{
+                        if (this.readyState == 4 && this.status==404){
+                             return callback(JSON.stringify({ message : 'Not Found', status : 404 }), this)
+                        }
                     }
                 }
             };
-            x.onerror = function() { 
-                return error(this); 
+            xmlHttpRequest.onerror = function() { 
+            	if (__isFunc(error)){
+                	return error(this); 
+            	}
             };
-            x.open(method, url, !0);
-            let header = (this.header) ? (this.header) : __init.header;
-            x.setRequestHeader('Content-Type', header);
-            try { 
-                x.send(form_data) 
+            try {
+	            xmlHttpRequest.open(method, url, !0);
+	            let header = (this.header) ? (this.header) : __init.header;
+	            xmlHttpRequest.setRequestHeader('Content-Type', header);
+                xmlHttpRequest.send(form_data) 
             } 
             catch (error) 
             { 
