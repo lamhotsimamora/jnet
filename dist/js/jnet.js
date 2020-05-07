@@ -24,6 +24,7 @@ class _jnet
             this.data = init.data;
             this.header = init.header;
             this.auto = (init.auto===undefined) ? true : init.auto;
+            this.async = (init.async===undefined) ? true : init.async;
         }else{
             __dbg('Kamu harus memasukkan data init');
         }
@@ -80,7 +81,7 @@ class _jnet
             	}
             };
             try {
-	            xmlHttpRequest.open(method, url, !0);
+	            xmlHttpRequest.open(method, url, this.async);
 	            let header = (this.header) ? (this.header) : __init.header;
 	            xmlHttpRequest.setRequestHeader('Content-Type', header);
                 xmlHttpRequest.send(form_data) 
