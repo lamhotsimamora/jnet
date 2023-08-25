@@ -3,7 +3,8 @@ Simple Library XMLHttpRequest (Javascript / AJAX)
 
 ## CDN
 ```
-	<script src="https://www.cdn.lamhotsimamora.com/jnet/"></script>
+ <script src="https://cdn.jsdelivr.net/gh/lamhotsimamora/jnet@master/dist/js/jnet.js"></script>
+    
 ```
 
 ## Example "Method GET" 
